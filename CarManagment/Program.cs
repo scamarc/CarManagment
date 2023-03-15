@@ -1,5 +1,6 @@
 ﻿//using System;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Runtime.ExceptionServices;
 using System.Xml.Serialization;
 
@@ -9,7 +10,7 @@ namespace CarManagment
     {
         static void Main(string[] args)
         {
-            for (; ;)
+            for (;;)
             {
                 Console.Clear();
                 Console.WriteLine("_________________________________");
@@ -28,16 +29,20 @@ namespace CarManagment
                 string menu = Console.ReadLine();
                 if (Int32.TryParse(menu, out choice))
                 {
-                    if ((choice > 0) && (choice < 5)) Console.WriteLine("Prawidłowy wybór: " + choice);
-                    else if (choice == 0) break;
-                    else Console.WriteLine(" Brak opcji " + choice + " w menu");
+                    if (choice == 0) break;
+                    switch (choice)
+                    {
+                        case 1: Console.WriteLine("wybrałeś 1 "); break;
+                        case 2: Console.WriteLine("Wybrałeś 2 "); break;
+                        case 3: Console.WriteLine("wybrałeś 3 "); break;
+                        case 4: Console.WriteLine("wybrałeś 4 "); break;
+                        default: Console.WriteLine("Brak opcji: " + choice); break;
+
+                    }
                 }
-
-                else
-
-                    Console.WriteLine(menu + " <- to nie jest liczba!");
+                else  Console.WriteLine(menu + " <- to nie jest liczba!");
                 Console.ReadKey();
-
+                
             }
            
         }
