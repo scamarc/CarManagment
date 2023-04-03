@@ -1,8 +1,16 @@
-﻿//using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CarManagment.Domain.Entity;
+using CarManagment.App.Abstract;
+using CarManagment.App.Concrete;
+using CarManagment.App.Manager;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq.Expressions;
 using System.Runtime.ExceptionServices;
 using System.Xml.Serialization;
+using CarManagment.Helpers;
 
 namespace CarManagment 
 {
@@ -10,47 +18,50 @@ namespace CarManagment
     {
         static void Main(string[] args)
         {
-            for (;;)
+  
+            MenuActionService actionService = new MenuActionService();
+            ItemService itemService = new ItemService();
+            ItemManager itemManager = new ItemManager(actionService, itemService);
+
+            Console.Clear();
+            Console.WriteLine("_________________________________");
+
+            Console.WriteLine("|   C A R   M A N A G M E N T   |");
+            Console.WriteLine("|_______________________________|");
+            for(; ;)
             {
-                Console.Clear();
-                Console.WriteLine("_________________________________");
-                Console.WriteLine("|   C A R   M A N A G M E N T   |");
-                Console.WriteLine("|_______________________________|");
-                Console.WriteLine("|     Proszę wybrać cyfrę:      |");
-                Console.WriteLine("|   1 - Raport o stanie floty   |");
-                Console.WriteLine("|   2 - Raport o samochodzie    |");
-                Console.WriteLine("|   3 - Dodać nowy pojazd       |");
-                Console.WriteLine("|   4 - Usunąć pojazd           |");
-                Console.WriteLine("|                               |");
-                Console.WriteLine("|   0 - Zakończ program         |");
-                Console.WriteLine("|_______________________________|");
-
-                int choice = 0;
-                string menu = Console.ReadLine();
-                if (Int32.TryParse(menu, out choice))
+                var mainMenu = actionService.GetMenuActionsByMenuName("Main");
+                int id = actionService.GetMenuId(mainMenu);
+                switch (id)
                 {
-                    if (choice == 0) break;
-                    switch (choice)
-                    {
-                        case 1: Console.WriteLine("wybrałeś 1 "); break;
-                        case 2: Console.WriteLine("Wybrałeś 2 "); break;
-                        case 3: Console.WriteLine("wybrałeś 3 "); break;
-                        case 4: Console.WriteLine("wybrałeś 4 "); break;
-                        default: Console.WriteLine("Brak opcji: " + choice); break;
-
-                    }
+                    case 0:
+                        Console.Clear();
+                        Console.WriteLine("_________________________________");
+                        Console.WriteLine("|  D O   Z O B A C Z E N I A    |");
+                        Console.WriteLine("|_______________________________|");
+                        return;
+                    case 1:
+                        itemManager.CarView();
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        itemManager.CarViewTypId();
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        itemManager.ListCarById();
+                        break;
+                    case 4:
+                        itemManager.AddNewCar();
+                        break;
+                    case 5:
+                        itemManager.RemoveCarById();
+                        break;
+                    default:
+                        break;
                 }
-                else  Console.WriteLine(menu + " <- to nie jest liczba!");
-                Console.ReadKey();
-                
-            }
-           
+            }        
         }
-
     }
-
-
-
-
 }
 
